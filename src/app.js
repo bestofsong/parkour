@@ -24,9 +24,9 @@ var MenuLayer = cc.Layer.extend({
         cc.MenuItemFont.setFontSize(60);
 
         //6.create a menu and assign onPlay event callback to it
-        var menuItemPlay = cc.MenuItemSprite.create(
-            new cc.Sprite(res.start_n_png), // normal state image
-            new cc.Sprite(res.start_s_png), //select state image
+        var menuItemPlay = new cc.MenuItemSprite(
+        	new cc.Sprite(res.start_n_png), // normal state image
+        	new cc.Sprite(res.start_s_png), //select state image
             this.onPlay, this);
         var menu = new cc.Menu(menuItemPlay);  //7. create the menu
         menu.setPosition(centerpos);

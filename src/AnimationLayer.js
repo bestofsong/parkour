@@ -1,4 +1,8 @@
 var AnimationLayer = cc.Layer.extend({
+    spriteSheet: null,
+    runningAction: null,
+    sprite: null,
+
     ctor:function () {
         this._super();
         this.init();
@@ -6,13 +10,25 @@ var AnimationLayer = cc.Layer.extend({
     init:function () {
         this._super();
 
-        //cerate the hero sprite
-        var spriteRunner = new cc.Sprite(res.runner_png);
-        spriteRunner.attr({x: 80, y: 85});
+        // create sprite sheet
+        cc.spriteFrameCache.addSpriteFrames(res.runner_plist);
+        this.spriteSheet = new cc.SpriteBatchNode(res.runner_png);
+        this.addChild(this.spriteSheet);
 
-        //create the move action
-        var actionTo = new cc.MoveTo(2, cc.p(300, 85));
-        spriteRunner.runAction(cc.Sequence.create(actionTo));
-        this.addChild(spriteRunner);
+
+        // init runningAction
+        var animFrames = [];
+        for (var i = 0; i < 8; i++) {
+            var str = "runner" + i + ".png";
+            var frame = cc.spriteFrameCache.getSpriteFrame(str);
+            animFrames.push(frame);
+        }
+
+        var animation = new cc.Animation(animFrames, 0.1);
+        this.runningAction = new cc.RepeatForever(new cc.Animate(animation));
+        this.sprite = new cc.Sprite("#runner0.png");
+        this.sprite.attr({x:80, y:85});
+        this.sprite.runAction(this.runningAction);
+        this.spriteSheet.addChild(this.sprite);
     }
 });
